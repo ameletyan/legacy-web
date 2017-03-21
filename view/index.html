@@ -1,0 +1,140 @@
+<!DOCTYPE html>  <!-- HTML5 document type -->
+<html>
+<head>
+	<title>Legacy Web</title>
+	<!-- use go-debug.js when developing and go.js when deploying -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gojs/1.7.4/go-debug.js"></script>
+	<style type="text/css">
+
+		/* EVENTUALLY MOVE TO PROPER CSS DIRECTORY */
+
+		.diagram {
+			width: 1700px;
+			height: 1000px;
+			background-color: #fff;
+		}
+		.left {
+			float: left;
+		}
+		.right {
+			float: right;
+		}
+	</style>
+</head>
+<body>
+	<!-- The DIV for a Diagram needs an explicit size or else we will not see anything.
+     In this case we also add a background color so we can see that area. -->
+	<div id="diagramDiv" class="diagram right"></div>
+	<script type="text/javascript">
+
+		// EVENTUALLY MOVE AS MUCH AS POSSIBLE TO SCRIPTS
+
+		// Graph
+		var $ = go.GraphObject.make;
+
+		var diagram =
+		  $(go.Diagram, "diagramDiv",
+		    {
+		      initialContentAlignment: go.Spot.Center, // center Diagram contents
+		      "undoManager.isEnabled": true, // enable Ctrl-Z to undo and Ctrl-Y to redo
+		      layout: $(go.TreeLayout, // specify a Diagram.layout that arranges trees
+		                { angle: 90, layerSpacing: 35 })
+		    });
+
+		// the template we defined earlier
+		diagram.nodeTemplate =
+	    $(go.Node, "Auto",
+        $(go.Shape,  // the border
+          { fill: "transparent", stroke: "lightgray" }),
+        $(go.Panel, "Vertical",  // everything within the border
+          $(go.TextBlock,
+			      { margin: 4, stroke: "black", font: "bold 16px sans-serif", width: 400, textAlign: "center" },
+			      new go.Binding("text", "title")),
+          $(go.TextBlock,
+			      { margin: 2, stroke: "black", font: "italic 12px sans-serif" },
+			      new go.Binding("text", "year")),
+			    $(go.TextBlock,
+			      { margin: 12, stroke: "black", font: "16px sans-serif", width: 400 },
+			      new go.Binding("text", "description"))
+        )
+		  );
+
+		// define a Link template that routes orthogonally, with no arrowhead
+		diagram.linkTemplate =
+		  $(go.Link,
+		    { routing: go.Link.Orthogonal, corner: 5, relinkableFrom: true, relinkableTo: true },
+		    $(go.Shape, { strokeWidth: 3, stroke: "#555" })); // the link shape
+
+		var model = $(go.GraphLinksModel);
+
+		// EVENTUALLY WILL BE REPLACED BY DATABASE QUERY
+		var nodes = [
+		  { key: 1, title: "Conception of Theoretical Computing Machine", description: "Alan Turing develops the concept of a theoretical computing machine.", year: 1937 },
+			{ key: 2, title: "First Binary Digital Computer", description: "Konrad Zuse creates the Z1 Computer, a binary digital computer, using punch tape.", year: 1938 },
+			{ key: 3, title: "First Complex Number Calculator", description: "George Stibitz develops the first complex number calculator, which was a foundation for digital computers.", year: 1939 },
+			{ key: 4, title: "Hewlett Packard is Founded", description: "William Hewlett and David Packard start Hewlett Packard.", year: 1939 },
+			{ key: 5, title: "MARK Series of Computers Developed", description: "Howard Aiken and Grace Hopper designed the MARK series of computers at Harvard University.", year: 1944 },
+			{ key: 6, title: "Harvard-MARK III Developed", description: "Howard Aiken develops the Harvard-MARK III computer.", year: 1949 },
+		];
+
+		// EVENTUALLY WILL BE REPLACED BY DATABASE QUERY
+		var links = [
+			{ from: 1, to: 2 },
+			{ from: 1, to: 3 },
+			{ from: 1, to: 4 },
+			{ from: 3, to: 5 },
+			{ from: 4, to: 5 },
+			{ from: 5, to: 6 },
+		]
+		var nodeDataArray = [];
+		var linkDataArray = links;
+		console.log(links);
+
+		// compile all nodes
+		for (i = 0; i < nodes.length; i++) {
+			var obj = { key: nodes[i].key, title: nodes[i].title };
+			if (nodes[i].description) {
+				obj.description = nodes[i].description;
+			}
+			if (nodes[i].year) {
+				obj.year = nodes[i].year;
+			}
+			nodeDataArray.push(obj);
+		}
+
+		model.nodeDataArray = nodeDataArray;
+		model.linkDataArray = linkDataArray;
+		diagram.model = model;
+
+		// Function to add node
+		addChild = function() {
+
+			// MUST EVENTUALLY ADD RECORD TO THE DATABASE
+			var title = prompt("Please enter a title for this event");
+			var description = prompt("(OPTIONAL) Please enter a description for this event");
+			var year = prompt("(OPTIONAL) Please enter the year of this event's occurence");
+	    var selnode = diagram.selection.first();
+
+	    if ((!(selnode instanceof go.Node))||(!title)) return;
+	    diagram.startTransaction("add node and link");
+
+	    // have the Model add a new node data
+	    var newnode = { key: "N", title: title, description: description };
+	    diagram.model.addNodeData(newnode);  // this makes sure the key is unique
+
+	    // and then add a link data connecting the original node with the new one
+	    var newlink = { from: selnode.data.key, to: newnode.key };
+
+	    // add the new link to the model
+	    diagram.model.addLinkData(newlink);
+
+	    // finish the transaction
+	    diagram.commitTransaction("add node and link");
+
+	  };
+
+	</script>
+	<div class="left">
+		<button id="addChild" onclick="addChild()">Add Node</button>
+	</div>
+</body>

@@ -4,10 +4,14 @@
   "description": "A sample Node.js app using Express 4",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "dependencies": {
-    "express": "^4.13.3"
+    "bootbox": "^4.4.0",
+    "bootstrap": "^3.3.7",
+    "express": "^4.13.3",
+    "mysql": "^2.13.0",
+    "requirejs": "^2.3.3"
   },
   "engines": {
     "node": "4.0.0"
