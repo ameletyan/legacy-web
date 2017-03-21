@@ -3,6 +3,10 @@
 A dynamic illustration of the history of computing.
 Built on top of this Node.js sample: https://github.com/heroku/node-js-sample
 
+## Link
+
+http://peaceful-sierra-98744.herokuapp.com/
+
 ## Running Locally
 
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
