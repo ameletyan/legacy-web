@@ -1,14 +1,15 @@
-# node-js-sample
+# legacy-web
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
+A dynamic illustration of the history of computing.
+Built on top of this Node.js sample: https://github.com/heroku/node-js-sample
 
 ## Running Locally
 
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
 
 ```sh
-git clone git@github.com:heroku/node-js-sample.git # or clone your own fork
-cd node-js-sample
+git clone https://github.com/ameletyan/legacy-web.git
+cd legacy-web
 npm install
 npm start
 ```
