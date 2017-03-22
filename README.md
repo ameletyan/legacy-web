@@ -1,7 +1,6 @@
 # legacy-web
 
 A dynamic illustration of the history of computing.
-Built on top of this Node.js sample: https://github.com/heroku/node-js-sample
 
 ## Link
 
