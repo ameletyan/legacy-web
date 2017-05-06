@@ -198,6 +198,11 @@
 		};
 
 		// Function to display info
+		clearSelection = function() {
+			diagram.clearSelection();
+		};
+
+		// Function to display info
 		info = function() {
 
 			// MUST EVENTUALLY ADD RECORD TO THE DATABASE
@@ -239,6 +244,11 @@
 		<br>
 		<button id="removeLink" onclick="removeLink()" class="btn btn-primary">
 			Remove Link
+		</button>
+		<br>
+		<br>
+		<button id="clearSelection" onclick="clearSelection()" class="btn btn-primary">
+			Clear Selection
 		</button>
 		<br>
 		<br>
