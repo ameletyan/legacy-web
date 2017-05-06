@@ -1,11 +1,25 @@
 # legacy-web
 
 A dynamic illustration of the history of computing.
-Built on top of this Node.js sample: https://github.com/heroku/node-js-sample
 
 ## Link
 
 http://peaceful-sierra-98744.herokuapp.com/
+
+## Documentation
+
+The intended goal of this project is to create a dynamic web of nodes that are linked such that the parent node has had an influence on the child node(s) (i.e. the node for "developing the MARK I series of computers" will be the parent node to the one for "developing the MARK II series of computers").  Users can add new nodes to be children of the existing nodes to build the web.  To do this, they must first select one of the existing nodes and then click on the "Add Node" button.
+
+This application was built using JavaScript and HTML on top of this Node.js sample: https://github.com/heroku/node-js-sample.  The GoJS API is being used to generate the nodes and links of the web.  Currently, the application can add new nodes to the web and move the existing nodes around.  Below is a tentative list of some features that will be implemented in the future:
+
+* creating base nodes that are historically accurate
+* database integration to persist added nodes
+* adding links between existing nodes
+* making the data in each node more readable when zoomed out
+* creating parentless nodes
+* general aesthetic changes
+
+# Development
 
 ## Running Locally
 
