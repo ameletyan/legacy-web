@@ -204,6 +204,7 @@
 			var sel = diagram.selection.first();
 			document.getElementById('infoData').textContent = sel.data.description;
 			if (sel instanceof go.Link) document.getElementById('infoDataLinks').textContent = sel.data.source;
+			else document.getElementById('infoDataLinks').textContent = "";
 
 		};
 
