@@ -4,6 +4,9 @@
 	<title>Legacy Web</title>
 	<!-- use go-debug.js when developing and go.js when deploying -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gojs/1.7.4/go-debug.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<style type="text/css">
 
 		/* EVENTUALLY MOVE TO PROPER CSS DIRECTORY */
@@ -19,11 +22,15 @@
 		.right {
 			float: right;
 		}
+		.infoData {
+			width: 10%;
+			padding: 5px;
+		}
 	</style>
 </head>
 <body>
 	<!-- The DIV for a Diagram needs an explicit size or else we will not see anything.
-     In this case we also add a background color so we can see that area. -->
+		 In this case we also add a background color so we can see that area. -->
 	<div id="diagramDiv" class="diagram right"></div>
 	<script type="text/javascript">
 
@@ -33,43 +40,40 @@
 		var $ = go.GraphObject.make;
 
 		var diagram =
-		  $(go.Diagram, "diagramDiv",
-		    {
-		      initialContentAlignment: go.Spot.Center, // center Diagram contents
-		      "undoManager.isEnabled": true, // enable Ctrl-Z to undo and Ctrl-Y to redo
-		      layout: $(go.TreeLayout, // specify a Diagram.layout that arranges trees
-		                { angle: 90, layerSpacing: 35 })
-		    });
+			$(go.Diagram, "diagramDiv",
+				{
+					initialContentAlignment: go.Spot.Center, // center Diagram contents
+					"undoManager.isEnabled": true, // enable Ctrl-Z to undo and Ctrl-Y to redo
+					layout: $(go.TreeLayout, // specify a Diagram.layout that arranges trees
+										{ angle: 90, layerSpacing: 35 })
+				});
 
 		// the template we defined earlier
 		diagram.nodeTemplate =
-	    $(go.Node, "Auto",
-        $(go.Shape,  // the border
-          { fill: "transparent", stroke: "lightgray" }),
-        $(go.Panel, "Vertical",  // everything within the border
-          $(go.TextBlock,
-			      { margin: 4, stroke: "black", font: "bold 16px sans-serif", width: 400, textAlign: "center" },
-			      new go.Binding("text", "title")),
-          $(go.TextBlock,
-			      { margin: 2, stroke: "black", font: "italic 12px sans-serif" },
-			      new go.Binding("text", "year")),
-			    $(go.TextBlock,
-			      { margin: 12, stroke: "black", font: "16px sans-serif", width: 400 },
-			      new go.Binding("text", "description"))
-        )
-		  );
+			$(go.Node, "Auto",
+				$(go.Shape,  // the border
+					{ fill: "transparent", stroke: "lightgray" }),
+				$(go.Panel, "Vertical",  // everything within the border
+					$(go.TextBlock,
+						{ margin: 4, stroke: "black", font: "bold 16px sans-serif", width: 400, textAlign: "center" },
+						new go.Binding("text", "title")),
+					$(go.TextBlock,
+						{ margin: 2, stroke: "black", font: "italic 12px sans-serif" },
+						new go.Binding("text", "year"))
+				)
+			);
 
 		// define a Link template that routes orthogonally, with no arrowhead
 		diagram.linkTemplate =
-		  $(go.Link,
-		    { routing: go.Link.Orthogonal, corner: 5, relinkableFrom: true, relinkableTo: true },
-		    $(go.Shape, { strokeWidth: 3, stroke: "#555" })); // the link shape
+			$(go.Link,
+				{ routing: go.Link.Orthogonal, corner: 5, relinkableFrom: true, relinkableTo: true },
+				$(go.Shape, { strokeWidth: 3, stroke: "#555" })); // the link shape
 
 		var model = $(go.GraphLinksModel);
 
 		// EVENTUALLY WILL BE REPLACED BY DATABASE QUERY
 		var nodes = [
-		  { key: 1, title: "Conception of Theoretical Computing Machine", description: "Alan Turing develops the concept of a theoretical computing machine.", year: 1937 },
+			{ key: 1, title: "Conception of Theoretical Computing Machine", description: "Alan Turing develops the concept of a theoretical computing machine.", year: 1937 },
 			{ key: 2, title: "First Binary Digital Computer", description: "Konrad Zuse creates the Z1 Computer, a binary digital computer, using punch tape.", year: 1938 },
 			{ key: 3, title: "First Complex Number Calculator", description: "George Stibitz develops the first complex number calculator, which was a foundation for digital computers.", year: 1939 },
 			{ key: 4, title: "Hewlett Packard is Founded", description: "William Hewlett and David Packard start Hewlett Packard.", year: 1939 },
@@ -79,12 +83,12 @@
 
 		// EVENTUALLY WILL BE REPLACED BY DATABASE QUERY
 		var links = [
-			{ from: 1, to: 2 },
-			{ from: 1, to: 3 },
-			{ from: 1, to: 4 },
-			{ from: 3, to: 5 },
-			{ from: 4, to: 5 },
-			{ from: 5, to: 6 },
+			{ from: 1, to: 2, description: "Conception of Theoretical Computing Machine influenced First Binary Digital Computer", source: "https://en.wikipedia.org/wiki/Aid_to_Russia_Fund" },
+			{ from: 1, to: 3, description: "Conception of Theoretical Computing Machine influenced First Complex Number Calculator", source: "https://en.wikipedia.org/wiki/N%C3%BCshu_script" },
+			{ from: 1, to: 4, description: "Conception of Theoretical Computing Machine influenced Hewlett Packard is Founded", source: "https://en.wikipedia.org/wiki/Mordy_Bromberg" },
+			{ from: 3, to: 5, description: "First Complex Number Calculator influenced MARK Series of Computers Developed", source: "https://en.wikipedia.org/wiki/Cyprus_Fire_Service" },
+			{ from: 4, to: 5, description: "Hewlett Packard is Founded influenced MARK Series of Computers Developed", source: "https://en.wikipedia.org/wiki/Works_of_Hayao_Miyazaki" },
+			{ from: 5, to: 6, description: "MARK Series of Computers influenced Developed Harvard-MARK III Developed", source: "https://en.wikipedia.org/wiki/Dabby-Doughs" },
 		]
 		var nodeDataArray = [];
 		var linkDataArray = links;
@@ -107,34 +111,142 @@
 		diagram.model = model;
 
 		// Function to add node
-		addChild = function() {
+		addNode = function() {
 
 			// MUST EVENTUALLY ADD RECORD TO THE DATABASE
+			var sel = diagram.selection.first();
 			var title = prompt("Please enter a title for this event");
-			var description = prompt("(OPTIONAL) Please enter a description for this event");
-			var year = prompt("(OPTIONAL) Please enter the year of this event's occurence");
-	    var selnode = diagram.selection.first();
+			if (sel) {
+				var year = prompt("(OPTIONAL) Please enter the year of this event's occurence");
+				var description = prompt("(OPTIONAL) Please enter a description for this event");
+				var linkDescription = prompt("(OPTIONAL) Please explain how these two events are linked");
+				var linkSource;
+				if (linkDescription) linkSource = prompt("Source:");
+				if (linkSource == "") linkDescription = ""; 
+			}
+			
+			if (!title) return;
+			diagram.startTransaction("add node and link");
 
-	    if ((!(selnode instanceof go.Node))||(!title)) return;
-	    diagram.startTransaction("add node and link");
+			// have the Model add a new node data
+			var newnode = { key: "N", title: title, year: year, description: description };
+			diagram.model.addNodeData(newnode);  // this makes sure the key is unique
 
-	    // have the Model add a new node data
-	    var newnode = { key: "N", title: title, description: description };
-	    diagram.model.addNodeData(newnode);  // this makes sure the key is unique
+			// and then add a link data connecting the original node with the new one
+			var newlink;
+			if (sel) newlink = { from: sel.data.key, to: newnode.key, description: linkDescription, source: linkSource };
+			else newlink = {};
 
-	    // and then add a link data connecting the original node with the new one
-	    var newlink = { from: selnode.data.key, to: newnode.key };
+			// add the new link to the model
+			diagram.model.addLinkData(newlink);
 
-	    // add the new link to the model
-	    diagram.model.addLinkData(newlink);
+			// finish the transaction
+			diagram.commitTransaction("add node and link");
 
-	    // finish the transaction
-	    diagram.commitTransaction("add node and link");
+		};
 
-	  };
+		// Function to remove node
+		removeNode = function() {
+
+			// MUST EVENTUALLY ADD RECORD TO THE DATABASE
+			var sel = diagram.selection.first();
+			if (!(sel instanceof go.Node)) return;
+
+			diagram.startTransaction("remove node");
+			diagram.commandHandler.deleteSelection();
+			diagram.commitTransaction("remove node");
+
+		};
+
+		// Function to add link
+		addLink = function() {
+
+			// MUST EVENTUALLY ADD RECORD TO THE DATABASE
+			var title = prompt("Please enter a title for the event you would like to link to the selected node");
+			var description = prompt("(OPTIONAL) Please explain how these two events are linked");
+			var source = "";
+			if (description) source = prompt("Source:");
+			if (source == "") description = "";
+			var newnode = diagram.findNodesByExample({ title: title }).oi.fi.key;
+			var sel = diagram.selection.first();
+
+			if ((!(sel instanceof go.Node))||(!title)) return;
+			diagram.startTransaction("add link");
+
+			// and then add a link data connecting the original node with the new one
+			var newlink = { from: sel.data.key, to: newnode.data.key, description: description, source: source };
+
+			// add the new link to the model
+			diagram.model.addLinkData(newlink);
+
+			// finish the transaction
+			diagram.commitTransaction("add link");
+
+		};
+
+		// Function to remove link
+		removeLink = function() {
+
+			// MUST EVENTUALLY ADD RECORD TO THE DATABASE
+			var sel = diagram.selection.first();
+			if (!(sel instanceof go.Link)) return;
+
+			diagram.startTransaction("remove link");
+			diagram.model.removeLinkData(sel.data);
+			diagram.commitTransaction("remove link");
+
+		};
+
+		// Function to display info
+		info = function() {
+
+			// MUST EVENTUALLY ADD RECORD TO THE DATABASE
+			var sel = diagram.selection.first();
+			document.getElementById('infoData').textContent = sel.data.description;
+			if (sel instanceof go.Link) document.getElementById('infoDataLinks').textContent = sel.data.source;
+
+		};
 
 	</script>
 	<div class="left">
-		<button id="addChild" onclick="addChild()">Add Node</button>
+		<!-- New Event:
+		<form>
+		  Title<br>
+		  <input type="text" id="title" name="title"><br>
+		  Year<br>
+		  <input type="text" id="year" name="year"><br>
+			Description<br>
+		  <input type="text" id="description" name="description"><br>
+			<button id="addNode" onclick="addNode(document.getElementById('title').value,document.getElementById('year').value,document.getElementById('description').value)" class="btn btn-primary">
+				Add Node
+			</button>
+		</form> -->
+		<button id="addNode" onclick="addNode()" class="btn btn-primary">
+			Add Node
+		</button>
+		<br>
+		<br>
+		<button id="addLink" onclick="addLink()" class="btn btn-primary">
+			Add Link
+		</button>
+		<br>
+		<br>
+		<button id="removeNode" onclick="removeNode()" class="btn btn-primary">
+			Remove Node
+		</button>
+		<br>
+		<br>
+		<button id="removeLink" onclick="removeLink()" class="btn btn-primary">
+			Remove Link
+		</button>
+		<br>
+		<br>
+		<button id="info" onclick="info()" class="btn btn-primary">
+			Info
+		</button>
+		<br>
+		<br>
 	</div>
+	<div id="infoData" class="left infoData"></div>
+	<div id="infoDataLinks" class="left infoData"></div>
 </body>
