@@ -15,6 +15,8 @@ With the new release, users can add nodes and links or remove them.  Now when ne
 * creating base nodes that are historically accurate
 * database integration to persist added nodes
 * general aesthetic changes
+* add method to dispute nodes/links and their sources
+* discussion forum?
 
 #### V 0.1:
 
